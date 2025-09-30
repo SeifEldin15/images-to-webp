@@ -2,9 +2,28 @@
 
 **Transform your images to WebP format with zero configuration!** ⚡
 
-An interactive CLI tool that automatically converts JPG, JPEG, and PNG images to WebP format. Includes smart directory detection, safe code updates, and opt## 📈 Changelog
+Multi-platform CLI tool that lets you convert .jpg or .png, and images to .webp 
 
-### v1.0.1 (Latest)
+An interactive CLI tool that automatically converts JPG, JPEG, and PNG images to WebP format. Includes smart directory detection, safe code updates, image exclusions, and optional cleanup of original files.
+
+[![npm version](https://badge.fury.io/js/webp-image-converter.svg)](https://www.npmjs.com/package/webp-image-converter)
+[![Cross-Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://www.npmjs.com/package/webp-image-converter)
+
+## 📈 Changelog
+
+### v1.0.3 (Latest)
+- � **NEW:** Image exclusion functionality
+- 🎯 Pattern-based exclusions (wildcards, specific files)
+- 📋 Manual image selection for exclusions
+- ⏭️ Smart skip tracking and reporting
+- 🔄 Improved conversion flow with exclusion previews
+
+### v1.0.2
+- 📄 Updated to MIT License with Attribution Requirement
+- ✅ Commercial use now explicitly allowed with attribution
+- 📝 Enhanced documentation for license terms
+
+### v1.0.1
 - 🔧 Fixed installation conflicts with clean command names
 - ✅ Easy installation without --force flag required
 - 📝 Added shorter command alias: `webp-converter`
@@ -16,10 +35,7 @@ An interactive CLI tool that automatically converts JPG, JPEG, and PNG images to
 - 🔍 Preview code changes before applying  
 - 🔒 Ultra-safe code updates (extensions only)
 - 📊 Improved progress tracking and error handling
-- 🎨 Interactive CLI interfaceup of original files.
-
-[![npm version](https://badge.fury.io/js/webp-image-converter.svg)](https://www.npmjs.com/package/webp-image-converter)
-[![Cross-Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://www.npmjs.com/package/webp-image-converter)
+- 🎨 Interactive CLI interface
 
 ## ⚡ Quick Start
 
@@ -249,6 +265,27 @@ webp-converter                   # Shorter alias
 - **Auto-detected Folders** - Common image directories (`public/`, `assets/`, etc.)
 - **Custom Path** - Specify any directory path
 
+### 🚫 Exclusion Options
+- **No Exclusions** - Convert all found images (default)
+- **Pattern-based Exclusions** - Use patterns to exclude files:
+  - `logo.png` - Exclude specific file
+  - `*thumbnail*` - Exclude files containing "thumbnail"
+  - `temp*` - Exclude files starting with "temp"
+  - `*.backup.jpg` - Exclude backup files
+- **Manual Selection** - Choose specific images to exclude from a list
+
+#### Exclusion Pattern Examples
+```bash
+# Exclude specific files
+logo.png, favicon.ico
+
+# Exclude by patterns (wildcards supported)
+*thumb*, *_small*, temp*, *.backup.*
+
+# Exclude by partial names
+thumbnail, preview, draft
+```
+
 ## 🚨 Common Use Cases
 
 - **🌐 Web Development** - Optimize images for websites and web apps
@@ -283,21 +320,20 @@ Found a bug or have a feature request?
 - 💡 [Request Features](https://github.com/SeifEldin15/webp-image-converter/issues/new)
 - 🔧 [Submit Pull Requests](https://github.com/SeifEldin15/webp-image-converter/pulls)
 
-## � Changelog
+## 📄 License
 
-### v1.1.0 (Latest)
-- ✨ Enhanced smart directory detection
-- 🔍 Preview code changes before applying  
-- 🔒 Ultra-safe code updates (extensions only)
-- 📊 Improved progress tracking and error handling
-- 🎨 Better CLI interface and user experience
+**MIT License with Attribution Requirement**
 
-### v1.0.x
-- 🚀 Initial release with basic conversion features
+✅ **Commercial use allowed** - Use this in your commercial projects!  
+✅ **Modification allowed** - Fork, modify, and distribute freely  
+⚠️ **Attribution required** - You MUST credit "SeifEldin15" prominently  
 
-## �📄 License
+**Attribution Requirements:**
+- Include "SeifEldin15" in your credits/about section
+- Link to: https://github.com/SeifEldin15/webp-image-converter
+- Attribution must be visible to end users
 
-MIT License - see [LICENSE](LICENSE) file for details.
+See [LICENSE](LICENSE) file for full details.
 
 ---
 
