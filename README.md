@@ -2,7 +2,21 @@
 
 **Transform your images to WebP format with zero configuration!** ⚡
 
-An interactive CLI tool that automatically converts JPG, JPEG, and PNG images to WebP format. Includes smart directory detection, safe code updates, and optional cleanup of original files.
+An interactive CLI tool that automatically converts JPG, JPEG, and PNG images to WebP format. Includes smart directory detection, safe code updates, and opt## 📈 Changelog
+
+### v1.0.1 (Latest)
+- 🔧 Fixed installation conflicts with clean command names
+- ✅ Easy installation without --force flag required
+- 📝 Added shorter command alias: `webp-converter`
+- 🛠️ Improved npm package stability
+
+### v1.0.0
+- 🚀 Initial npm release
+- ✨ Enhanced smart directory detection
+- 🔍 Preview code changes before applying  
+- 🔒 Ultra-safe code updates (extensions only)
+- 📊 Improved progress tracking and error handling
+- 🎨 Interactive CLI interfaceup of original files.
 
 [![npm version](https://badge.fury.io/js/webp-image-converter.svg)](https://www.npmjs.com/package/webp-image-converter)
 [![Cross-Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://www.npmjs.com/package/webp-image-converter)
@@ -215,7 +229,14 @@ $ npx webp-image-converter
 | **Output Format** | `.webp` |
 | **Dependencies** | Automatically installed with npm |
 
-## 🔧 Configuration Options
+## 🔧 Commands & Options
+
+### Available Commands
+```bash
+npx webp-image-converter          # Run without installing
+webp-image-converter             # After global install
+webp-converter                   # Shorter alias
+```
 
 ### Quality Settings
 - **High Quality (90%)** - Best quality, larger files
@@ -250,6 +271,9 @@ A: The tool creates WebP versions alongside originals. Only delete originals if 
 
 **Q: Does this work with Git repositories?**  
 A: Yes! The tool respects `.gitignore` and works great in version-controlled projects.
+
+**Q: What's the difference between the commands?**  
+A: `webp-image-converter` and `webp-converter` do exactly the same thing - use whichever you prefer!
 
 ## 🤝 Contributing
 
