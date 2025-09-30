@@ -30,6 +30,7 @@ That's it! The tool will guide you through an interactive setup.
 - 📁 **Recursive conversion** - Processes all subdirectories automatically  
 - 🎨 **Quality options** - Choose from High (90), Standard (80), Good (70), or Smaller (60)
 - 🔍 **Smart detection** - Finds all `.jpg`, `.jpeg`, and `.png` files
+- 📝 **Auto code updates** - Updates HTML, CSS, JS, and other files to use WebP images
 - ✅ **Safe cleanup** - Only deletes originals after successful WebP conversion
 - 📊 **Progress tracking** - Shows conversion progress and results
 - ⚠️ **Confirmation prompts** - Asks before destructive operations
@@ -41,7 +42,8 @@ That's it! The tool will guide you through an interactive setup.
 3. **Select quality** - Pick your preferred WebP quality setting
 4. **Review & confirm** - See how many images will be converted
 5. **Wait for conversion** - Watch the progress as images are optimized
-6. **Optional cleanup** - Choose whether to delete original files
+6. **Update code files** - Automatically update HTML, CSS, JS files to use WebP
+7. **Optional cleanup** - Choose whether to delete original files
 
 ## 📸 Example Usage
 
@@ -63,7 +65,11 @@ $ npx images-to-webp
 
 📈 Conversion complete!
 ✅ Successfully converted: 15 images
-? 🗑️  Delete original files after successful conversion? No
+? � Update code files to use new WebP images? (HTML, CSS, JS, etc.) Yes
+
+📝 Scanning and updating code files...
+✅ Updated 8 code file(s) with 23 image reference(s)
+? �🗑️  Delete original files after successful conversion? No
 
 🎉 All done! Your images have been optimized.
 ```
