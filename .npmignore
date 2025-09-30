@@ -1,0 +1,36 @@
+# Files to exclude from npm package
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Development files
+test-*
+create-test-*
+*.test.js
+*-backup.*
+convert-to-webp.js
+delete-originals.js
+
+# Screenshots and example images
+Screenshot*
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# Documentation drafts
+README-new.md
+
+# IDE files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

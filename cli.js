@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 
 import fs from "fs";
 import path from "path";
@@ -43,6 +44,7 @@ async function countImages(dir) {
         }
       });
     } catch (error) {
+      // Skip directories we can't access
     }
   }
   
@@ -101,6 +103,7 @@ async function deleteOriginals(dir) {
         if (stat.isDirectory()) {
           walkAndDelete(fullPath);
         } else if (stat.isFile() && supportedExtensions.includes(path.extname(file).toLowerCase())) {
+          // Check if corresponding .webp file exists
           const webpPath = fullPath.replace(/\.(jpg|jpeg|png)$/i, ".webp");
           if (fs.existsSync(webpPath)) {
             fs.unlinkSync(fullPath);
@@ -130,6 +133,7 @@ async function findCodeFiles(dir) {
         const stat = fs.statSync(fullPath);
 
         if (stat.isDirectory()) {
+          // Skip common directories that don't contain source code
           const dirName = path.basename(fullPath);
           if (!['node_modules', '.git', 'dist', 'build', '.next', 'vendor'].includes(dirName)) {
             walkDir(fullPath);
@@ -139,6 +143,7 @@ async function findCodeFiles(dir) {
         }
       });
     } catch (error) {
+      // Skip directories we can't access
     }
   }
   
@@ -155,14 +160,17 @@ async function previewCodeChanges(dir, convertedImages) {
       const content = fs.readFileSync(filePath, 'utf8');
       const fileChanges = [];
 
+      // Create safe patterns for each converted image
       for (const imagePath of convertedImages) {
         const imageFilename = path.basename(imagePath);
         const escapedFilename = imageFilename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         
+        // Ultra-safe pattern: only match exact filename with image extensions
         const safePattern = new RegExp(escapedFilename, 'g');
         
         let match;
         while ((match = safePattern.exec(content)) !== null) {
+          // Double-check it's actually an image reference
           if (/\.(jpg|jpeg|png)$/i.test(match[0])) {
             const webpVersion = match[0].replace(/\.(jpg|jpeg|png)$/i, '.webp');
             fileChanges.push({
@@ -200,13 +208,16 @@ async function updateCodeFiles(dir, convertedImages) {
       let originalContent = content;
       let replacements = 0;
 
+      // Create ultra-safe patterns for each converted image
       for (const imagePath of convertedImages) {
         const imageFilename = path.basename(imagePath);
         const escapedFilename = imageFilename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         
+        // Ultra-safe: Only replace exact filename matches with image extensions
         const safePattern = new RegExp(escapedFilename, 'g');
         
         content = content.replace(safePattern, (match) => {
+          // Triple-check: only replace if it's actually an image file
           if (/\.(jpg|jpeg|png)$/i.test(match)) {
             replacements++;
             return match.replace(/\.(jpg|jpeg|png)$/i, '.webp');
@@ -361,9 +372,11 @@ async function main() {
 
     console.log("\n🔄 Converting images...");
     
+    // Keep track of converted images for code updates
     const convertedImages = [];
     const originalConvertImages = convertImages;
     
+    // Collect converted image paths
     const { converted, errors } = await (async function(dir, quality) {
       let convertedCount = 0;
       let errorCount = 0;
@@ -387,7 +400,7 @@ async function main() {
                   .toFile(outputPath);
                 
                 console.log(`✅ Converted: ${path.relative(process.cwd(), fullPath)} → ${path.basename(outputPath)}`);
-                convertedImages.push(fullPath); 
+                convertedImages.push(fullPath); // Track converted images
                 convertedCount++;
               } catch (err) {
                 console.error(`❌ Error converting ${fullPath}:`, err.message);
@@ -411,6 +424,7 @@ async function main() {
     }
 
     if (converted > 0) {
+      // Ask about updating code files
       const updateCodeConfirm = await inquirer.prompt([
         {
           type: "confirm",
@@ -424,6 +438,7 @@ async function main() {
         console.log("\n📝 Scanning code files for image references...");
         console.log("🔒 Safe mode: Only updating file extensions (.jpg/.png → .webp)");
         
+        // Preview changes first
         const preview = await previewCodeChanges(resolvedPath, convertedImages);
         
         if (preview.length > 0) {
