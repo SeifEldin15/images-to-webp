@@ -1,6 +1,88 @@
 # 🖼️ Images to WebP Converter
 
-**Transform your images to WebP format with ze📈 Conversion complete!
+**Transform your images to WebP format with zero configuration!** ⚡
+
+An interactive CLI tool that automatically converts JPG, JPEG, and PNG images to WebP format. Includes smart directory detection, safe code updates, and optional cleanup of original files.
+
+[![npm version](https://badge.fury.io/js/webp-image-converter.svg)](https://www.npmjs.com/package/webp-image-converter)
+[![Cross-Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://www.npmjs.com/package/webp-image-converter)
+
+## ⚡ Quick Start
+
+### Just run this command in your project directory:
+
+```bash
+npx webp-image-converter
+```
+
+**That's it!** No installation needed. The tool will:
+- 🔍 Scan for images in your current directory and common folders
+- 🎨 Let you choose quality settings
+- 🔄 Convert all images to WebP format
+- 📝 Update your code files to use the new WebP images
+- 🗑️ Optionally clean up original files
+
+### Alternative Installation Methods:
+
+```bash
+# Install globally (if you use it frequently)
+npm install -g webp-image-converter
+webp-convert
+
+# Or install from GitHub
+npx github:SeifEldin15/webp-image-converter
+```
+
+---
+
+## ✨ Why Use This Tool?
+
+- **🚀 Zero Configuration** - Just run `npx webp-image-converter` and follow prompts
+- **🏠 Smart Detection** - Automatically finds images in common folders (`public/`, `assets/`, `images/`, etc.)
+- **📱 Cross-Platform** - Works on Windows, macOS, and Linux
+- **🎨 Quality Control** - Choose from 4 quality presets (60-90%)
+- **📝 Code Updates** - Safely updates HTML, CSS, JS files to use WebP (with preview!)
+- **⚡ Fast & Recursive** - Processes all subdirectories automatically
+- **🔒 Safe Operations** - Preview changes before applying, confirmation prompts
+- **📊 Progress Tracking** - Real-time conversion progress and detailed results
+
+## 🎯 How It Works
+
+1. **🏃‍♂️ Run** - `npx webp-image-converter` in your project directory
+2. **📂 Choose** - Current directory, detected folders, or custom path
+3. **🎨 Quality** - High (90%), Standard (80%), Good (70%), or Small (60%)
+4. **✅ Confirm** - Review how many images will be converted
+5. **⚡ Convert** - Watch real-time progress as images are optimized
+6. **📝 Update** - Preview and apply code changes (HTML/CSS/JS files)
+7. **🗑️ Cleanup** - Optionally delete original files (only after successful conversion)
+
+## 📸 Live Demo
+
+```bash
+$ npx webp-image-converter
+
+🖼️  Welcome to Images to WebP Converter!
+═══════════════════════════════════════
+? 📁 Where are your images located? 
+  🏠 Current directory (3 images found)
+❯ 📁 ./public/ (12 images found)
+  📁 ./assets/ (5 images found)
+  📂 Specify a different path
+
+? 🎨 Choose WebP quality: Standard Quality (80)
+
+📁 Using detected directory: ./public/
+
+📊 Found 12 image(s) to convert
+? Convert 12 image(s) to WebP format? Yes
+
+🔄 Converting images...
+✅ Converted: public/hero.jpg → hero.webp
+✅ Converted: public/logo.png → logo.webp
+✅ Converted: public/gallery/photo1.jpeg → photo1.webp
+...
+
+📈 Conversion complete!
 ✅ Successfully converted: 12 images
 
 ? 📝 Update code files to use new WebP images? Yes
@@ -27,15 +109,15 @@
 
 An interactive CLI tool that automatically converts JPG, JPEG, and PNG images to WebP format. Includes smart directory detection, safe code updates, and optional cleanup of original files.
 
-[![npm version](https://badge.fury.io/js/images-to-webp.svg)](https://www.npmjs.com/package/images-to-webp)
-[![Cross-Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://www.npmjs.com/package/images-to-webp)
+[![npm version](https://badge.fury.io/js/webp-image-converter.svg)](https://www.npmjs.com/package/webp-image-converter)
+[![Cross-Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://www.npmjs.com/package/webp-image-converter)
 
 ## ⚡ Quick Start
 
 ### Just run this command in your project directory:
 
 ```bash
-npx images-to-webp
+npx webp-image-converter
 ```
 
 **That's it!** No installation needed. The tool will:
@@ -49,18 +131,18 @@ npx images-to-webp
 
 ```bash
 # Install globally (if you use it frequently)
-npm install -g images-to-webp
+npm install -g webp-image-converter
 webp-convert
 
 # Or install from GitHub
-npx github:SeifEldin15/images-to-webp
+npx github:SeifEldin15/webp-image-converter
 ```
 
 ---
 
 ## ✨ Why Use This Tool?
 
-- **🚀 Zero Configuration** - Just run `npx images-to-webp` and follow prompts
+- **🚀 Zero Configuration** - Just run `npx webp-image-converter` and follow prompts
 - **🏠 Smart Detection** - Automatically finds images in common folders (`public/`, `assets/`, `images/`, etc.)
 - **� Cross-Platform** - Works on Windows, macOS, and Linux
 - **🎨 Quality Control** - Choose from 4 quality presets (60-90%)
@@ -71,7 +153,7 @@ npx github:SeifEldin15/images-to-webp
 
 ## 🎯 How It Works
 
-1. **🏃‍♂️ Run** - `npx images-to-webp` in your project directory
+1. **🏃‍♂️ Run** - `npx webp-image-converter` in your project directory
 2. **📂 Choose** - Current directory, detected folders, or custom path
 3. **🎨 Quality** - High (90%), Standard (80%), Good (70%), or Small (60%)
 4. **✅ Confirm** - Review how many images will be converted
@@ -82,7 +164,7 @@ npx github:SeifEldin15/images-to-webp
 ## 📸 Example Usage
 
 ```bash
-$ npx images-to-webp
+$ npx webp-image-converter
 
 🖼️  Welcome to Images to WebP Converter!
 ═══════════════════════════════════════
@@ -173,9 +255,9 @@ A: Yes! The tool respects `.gitignore` and works great in version-controlled pro
 
 Found a bug or have a feature request? 
 
-- 🐛 [Report Issues](https://github.com/SeifEldin15/images-to-webp/issues)
-- 💡 [Request Features](https://github.com/SeifEldin15/images-to-webp/issues/new)
-- 🔧 [Submit Pull Requests](https://github.com/SeifEldin15/images-to-webp/pulls)
+- 🐛 [Report Issues](https://github.com/SeifEldin15/webp-image-converter/issues)
+- 💡 [Request Features](https://github.com/SeifEldin15/webp-image-converter/issues/new)
+- 🔧 [Submit Pull Requests](https://github.com/SeifEldin15/webp-image-converter/pulls)
 
 ## � Changelog
 

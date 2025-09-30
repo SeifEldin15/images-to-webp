@@ -3,13 +3,11 @@ import path from "path";
 import sharp from "sharp";
 import { fileURLToPath } from "url";
 
-// Support for __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const supportedExtensions = [".jpg", ".jpeg", ".png"];
 
-// Get folder path from command-line argument
 const inputPath = process.argv[2];
 
 if (!inputPath) {
@@ -23,7 +21,7 @@ function walkAndConvert(dir) {
     const stat = fs.statSync(fullPath);
 
     if (stat.isDirectory()) {
-      walkAndConvert(fullPath); // Recursively walk subdirectories
+      walkAndConvert(fullPath);
     } else if (stat.isFile() && supportedExtensions.includes(path.extname(file).toLowerCase())) {
       const outputPath = fullPath.replace(/\.(jpg|jpeg|png)$/i, ".webp");
 
