@@ -1,6 +1,6 @@
 {
   "name": "webp-image-converter",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "type": "module",
   "main": "cli.js",
   "bin": {
@@ -17,12 +17,12 @@
     "url": "git+https://github.com/SeifEldin15/webp-image-converter.git"
   },
   "author": "SeifEldin15",
-  "license": "MIT",
+  "license": "MIT-Attribution",
   "bugs": {
     "url": "https://github.com/SeifEldin15/webp-image-converter/issues"
   },
   "homepage": "https://github.com/SeifEldin15/webp-image-converter#readme",
-  "description": "A CLI tool to automatically convert images to WebP format with optional cleanup of original files",
+  "description": "A CLI tool to automatically convert images to WebP format with exclusion patterns and optional cleanup of original files. Commercial use allowed with attribution.",
   "keywords": ["webp", "image", "conversion", "optimization", "cli", "sharp"],
   "dependencies": {
     "inquirer": "^9.2.15",

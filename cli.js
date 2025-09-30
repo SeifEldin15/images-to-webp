@@ -28,7 +28,7 @@ async function validateDirectory(dirPath) {
   }
 }
 
-async function countImages(dir) {
+async function countImages(dir, exclusionPatterns = []) {
   let count = 0;
   
   function walkDir(directory) {
@@ -40,7 +40,10 @@ async function countImages(dir) {
         if (stat.isDirectory()) {
           walkDir(fullPath);
         } else if (stat.isFile() && supportedExtensions.includes(path.extname(file).toLowerCase())) {
-          count++;
+          const relativePath = path.relative(dir, fullPath);
+          if (!shouldExcludeImage(relativePath, exclusionPatterns)) {
+            count++;
+          }
         }
       });
     } catch (error) {
@@ -51,9 +54,10 @@ async function countImages(dir) {
   return count;
 }
 
-async function convertImages(dir, quality = 80) {
+async function convertImages(dir, quality = 80, exclusionPatterns = []) {
   let converted = 0;
   let errors = 0;
+  let skipped = 0;
 
   async function walkAndConvert(directory) {
     try {
@@ -66,6 +70,14 @@ async function convertImages(dir, quality = 80) {
         if (stat.isDirectory()) {
           await walkAndConvert(fullPath);
         } else if (stat.isFile() && supportedExtensions.includes(path.extname(file).toLowerCase())) {
+          const relativePath = path.relative(dir, fullPath);
+          
+          if (shouldExcludeImage(relativePath, exclusionPatterns)) {
+            console.log(`⏭️  Skipped: ${path.relative(process.cwd(), fullPath)} (excluded)`);
+            skipped++;
+            continue;
+          }
+          
           const outputPath = fullPath.replace(/\.(jpg|jpeg|png)$/i, ".webp");
           
           try {
@@ -87,7 +99,7 @@ async function convertImages(dir, quality = 80) {
   }
 
   await walkAndConvert(dir);
-  return { converted, errors };
+  return { converted, errors, skipped };
 }
 
 async function deleteOriginals(dir) {
@@ -231,6 +243,62 @@ async function updateCodeFiles(dir, convertedImages) {
   return { updatedFiles, totalReplacements };
 }
 
+async function collectAllImages(dir) {
+  const images = [];
+  
+  function walkDir(directory) {
+    try {
+      fs.readdirSync(directory).forEach((file) => {
+        const fullPath = path.join(directory, file);
+        const stat = fs.statSync(fullPath);
+
+        if (stat.isDirectory()) {
+          walkDir(fullPath);
+        } else if (stat.isFile() && supportedExtensions.includes(path.extname(file).toLowerCase())) {
+          images.push({
+            fullPath,
+            relativePath: path.relative(dir, fullPath),
+            filename: path.basename(fullPath)
+          });
+        }
+      });
+    } catch (error) {
+    }
+  }
+  
+  walkDir(dir);
+  return images;
+}
+
+function shouldExcludeImage(imagePath, exclusionPatterns) {
+  if (!exclusionPatterns || exclusionPatterns.length === 0) {
+    return false;
+  }
+  
+  const filename = path.basename(imagePath);
+  const relativePath = imagePath;
+  
+  return exclusionPatterns.some(pattern => {
+    // Direct filename match
+    if (pattern === filename) {
+      return true;
+    }
+    
+    // Wildcard pattern matching
+    if (pattern.includes('*')) {
+      const regexPattern = pattern
+        .replace(/\./g, '\\.')
+        .replace(/\*/g, '.*');
+      const regex = new RegExp(`^${regexPattern}$`, 'i');
+      return regex.test(filename) || regex.test(relativePath);
+    }
+    
+    // Partial filename match
+    return filename.toLowerCase().includes(pattern.toLowerCase()) ||
+           relativePath.toLowerCase().includes(pattern.toLowerCase());
+  });
+}
+
 async function detectCommonImageDirs() {
   const commonDirs = ['public', 'assets', 'images', 'img', 'static', 'src/assets', 'public/images'];
   const existingDirs = [];
@@ -339,11 +407,92 @@ async function main() {
 
     console.log(`\n📊 Found ${imageCount} image(s) to convert`);
     
+    // Handle exclusions
+    let exclusionPatterns = [];
+    const exclusionChoice = await inquirer.prompt([
+      {
+        type: "list",
+        name: "exclusionType",
+        message: "🚫 Do you want to exclude any images?",
+        choices: [
+          { name: "No, convert all images", value: "none" },
+          { name: "Yes, exclude by filename patterns", value: "patterns" },
+          { name: "Yes, let me select specific images to exclude", value: "select" }
+        ],
+        default: "none"
+      }
+    ]);
+
+    if (exclusionChoice.exclusionType === "patterns") {
+      const patternInput = await inquirer.prompt([
+        {
+          type: "input",
+          name: "patterns",
+          message: "🎯 Enter exclusion patterns (comma-separated):\n     Examples: logo.png, *thumbnail*, temp*, *.backup.jpg",
+          validate: (input) => {
+            if (!input || input.trim() === "") {
+              return "Please enter at least one pattern or choose 'No exclusions'";
+            }
+            return true;
+          }
+        }
+      ]);
+      
+      exclusionPatterns = patternInput.patterns
+        .split(',')
+        .map(p => p.trim())
+        .filter(p => p.length > 0);
+        
+      console.log(`🎯 Exclusion patterns: ${exclusionPatterns.join(', ')}`);
+      
+    } else if (exclusionChoice.exclusionType === "select") {
+      const allImages = await collectAllImages(resolvedPath);
+      
+      if (allImages.length === 0) {
+        console.log("❌ No images found for selection!");
+        process.exit(1);
+      }
+      
+      const imageChoices = allImages.map(img => ({
+        name: `${img.relativePath} (${(fs.statSync(img.fullPath).size / 1024).toFixed(1)}KB)`,
+        value: img.relativePath
+      }));
+      
+      const exclusionSelection = await inquirer.prompt([
+        {
+          type: "checkbox",
+          name: "excludedImages",
+          message: "📋 Select images to EXCLUDE from conversion:",
+          choices: imageChoices,
+          pageSize: 15
+        }
+      ]);
+      
+      exclusionPatterns = exclusionSelection.excludedImages;
+      
+      if (exclusionPatterns.length > 0) {
+        console.log(`🚫 Will exclude ${exclusionPatterns.length} image(s)`);
+      }
+    }
+
+    // Recalculate image count with exclusions
+    const finalImageCount = await countImages(resolvedPath, exclusionPatterns);
+    
+    if (finalImageCount === 0) {
+      console.log("\n❌ No images remain after applying exclusions!");
+      console.log("💡 Try adjusting your exclusion patterns or selecting fewer images to exclude");
+      process.exit(1);
+    }
+    
+    if (exclusionPatterns.length > 0) {
+      console.log(`\n📊 After exclusions: ${finalImageCount} image(s) will be converted`);
+    }
+    
     const confirmConvert = await inquirer.prompt([
       {
         type: "confirm",
         name: "proceed",
-        message: `Convert ${imageCount} image(s) to WebP format?`,
+        message: `Convert ${finalImageCount} image(s) to WebP format?`,
         default: true
       }
     ]);
@@ -356,11 +505,11 @@ async function main() {
     console.log("\n🔄 Converting images...");
     
     const convertedImages = [];
-    const originalConvertImages = convertImages;
     
-    const { converted, errors } = await (async function(dir, quality) {
+    const { converted, errors, skipped } = await (async function(dir, quality, exclusionPatterns) {
       let convertedCount = 0;
       let errorCount = 0;
+      let skippedCount = 0;
 
       async function walkAndConvert(directory) {
         try {
@@ -373,6 +522,14 @@ async function main() {
             if (stat.isDirectory()) {
               await walkAndConvert(fullPath);
             } else if (stat.isFile() && supportedExtensions.includes(path.extname(file).toLowerCase())) {
+              const relativePath = path.relative(dir, fullPath);
+              
+              if (shouldExcludeImage(relativePath, exclusionPatterns)) {
+                console.log(`⏭️  Skipped: ${path.relative(process.cwd(), fullPath)} (excluded)`);
+                skippedCount++;
+                continue;
+              }
+              
               const outputPath = fullPath.replace(/\.(jpg|jpeg|png)$/i, ".webp");
               
               try {
@@ -395,11 +552,14 @@ async function main() {
       }
 
       await walkAndConvert(dir);
-      return { converted: convertedCount, errors: errorCount };
-    })(resolvedPath, answers.quality);
+      return { converted: convertedCount, errors: errorCount, skipped: skippedCount };
+    })(resolvedPath, answers.quality, exclusionPatterns);
     
     console.log(`\n📈 Conversion complete!`);
     console.log(`✅ Successfully converted: ${converted} images`);
+    if (skipped > 0) {
+      console.log(`⏭️  Excluded: ${skipped} images`);
+    }
     if (errors > 0) {
       console.log(`❌ Errors: ${errors} images`);
     }
