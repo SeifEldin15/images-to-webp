@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 
 import fs from "fs";
 import path from "path";
@@ -17,7 +16,8 @@ console.log("══════════════════════�
 
 async function validateDirectory(dirPath) {
   try {
-    const stat = fs.statSync(dirPath);
+    const resolvedPath = path.resolve(dirPath);
+    const stat = fs.statSync(resolvedPath);
     if (!stat.isDirectory()) {
       return "Path is not a directory";
     }
@@ -43,7 +43,6 @@ async function countImages(dir) {
         }
       });
     } catch (error) {
-      // Skip directories we can't access
     }
   }
   
@@ -102,7 +101,6 @@ async function deleteOriginals(dir) {
         if (stat.isDirectory()) {
           walkAndDelete(fullPath);
         } else if (stat.isFile() && supportedExtensions.includes(path.extname(file).toLowerCase())) {
-          // Check if corresponding .webp file exists
           const webpPath = fullPath.replace(/\.(jpg|jpeg|png)$/i, ".webp");
           if (fs.existsSync(webpPath)) {
             fs.unlinkSync(fullPath);
@@ -132,7 +130,6 @@ async function findCodeFiles(dir) {
         const stat = fs.statSync(fullPath);
 
         if (stat.isDirectory()) {
-          // Skip common directories that don't contain source code
           const dirName = path.basename(fullPath);
           if (!['node_modules', '.git', 'dist', 'build', '.next', 'vendor'].includes(dirName)) {
             walkDir(fullPath);
@@ -142,7 +139,6 @@ async function findCodeFiles(dir) {
         }
       });
     } catch (error) {
-      // Skip directories we can't access
     }
   }
   
@@ -159,17 +155,14 @@ async function previewCodeChanges(dir, convertedImages) {
       const content = fs.readFileSync(filePath, 'utf8');
       const fileChanges = [];
 
-      // Create safe patterns for each converted image
       for (const imagePath of convertedImages) {
         const imageFilename = path.basename(imagePath);
         const escapedFilename = imageFilename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         
-        // Ultra-safe pattern: only match exact filename with image extensions
         const safePattern = new RegExp(escapedFilename, 'g');
         
         let match;
         while ((match = safePattern.exec(content)) !== null) {
-          // Double-check it's actually an image reference
           if (/\.(jpg|jpeg|png)$/i.test(match[0])) {
             const webpVersion = match[0].replace(/\.(jpg|jpeg|png)$/i, '.webp');
             fileChanges.push({
@@ -207,16 +200,13 @@ async function updateCodeFiles(dir, convertedImages) {
       let originalContent = content;
       let replacements = 0;
 
-      // Create ultra-safe patterns for each converted image
       for (const imagePath of convertedImages) {
         const imageFilename = path.basename(imagePath);
         const escapedFilename = imageFilename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         
-        // Ultra-safe: Only replace exact filename matches with image extensions
         const safePattern = new RegExp(escapedFilename, 'g');
         
         content = content.replace(safePattern, (match) => {
-          // Triple-check: only replace if it's actually an image file
           if (/\.(jpg|jpeg|png)$/i.test(match)) {
             replacements++;
             return match.replace(/\.(jpg|jpeg|png)$/i, '.webp');
@@ -240,15 +230,71 @@ async function updateCodeFiles(dir, convertedImages) {
   return { updatedFiles, totalReplacements };
 }
 
+async function detectCommonImageDirs() {
+  const commonDirs = ['public', 'assets', 'images', 'img', 'static', 'src/assets', 'public/images'];
+  const existingDirs = [];
+  
+  for (const dir of commonDirs) {
+    const fullPath = path.join(process.cwd(), dir);
+    try {
+      const stat = fs.statSync(fullPath);
+      if (stat.isDirectory()) {
+        const imageCount = await countImages(fullPath);
+        if (imageCount > 0) {
+          existingDirs.push({ dir, path: fullPath, count: imageCount });
+        }
+      }
+    } catch (error) {
+      // Directory doesn't exist, skip
+    }
+  }
+  
+  return existingDirs;
+}
+
 async function main() {
   try {
+    // Detect common image directories
+    const commonImageDirs = await detectCommonImageDirs();
+    const currentDirImages = await countImages(process.cwd());
+    
+    const choices = [];
+    
+    // Always show current directory option (even if 0 images)
+    choices.push({
+      name: `🏠 Current directory (${currentDirImages} images found)`, 
+      value: "current"
+    });
+    
+    // Add detected common directories (only those with images)
+    commonImageDirs.forEach(({ dir, count }) => {
+      choices.push({
+        name: `📁 ./${dir}/ (${count} images found)`,
+        value: dir
+      });
+    });
+    
+    // Always show custom path option
+    choices.push({ 
+      name: "📂 Specify a different path", 
+      value: "custom" 
+    });
+
     const answers = await inquirer.prompt([
+      {
+        type: "list",
+        name: "directoryChoice",
+        message: "📁 Where are your images located?",
+        choices: choices,
+        default: "current"
+      },
       {
         type: "input",
         name: "directory",
         message: "📁 Enter the directory path containing images:",
         default: "./",
-        validate: validateDirectory
+        validate: validateDirectory,
+        when: (answers) => answers.directoryChoice === "custom"
       },
       {
         type: "list",
@@ -264,12 +310,37 @@ async function main() {
       }
     ]);
 
-    const resolvedPath = path.resolve(answers.directory);
+    // Determine the working directory
+    let workingDirectory;
+    if (answers.directoryChoice === "current") {
+      workingDirectory = process.cwd();
+    } else if (answers.directoryChoice === "custom") {
+      workingDirectory = answers.directory;
+    } else {
+      // It's one of the detected common directories
+      workingDirectory = path.join(process.cwd(), answers.directoryChoice);
+    }
+    
+    const resolvedPath = path.resolve(workingDirectory);
+    
+    if (answers.directoryChoice === "current") {
+      console.log(`\n🏠 Using current directory: ${path.basename(resolvedPath)}`);
+    } else if (answers.directoryChoice === "custom") {
+      console.log(`\n📂 Using specified directory: ${resolvedPath}`);
+    } else {
+      console.log(`\n📁 Using detected directory: ./${answers.directoryChoice}/`);
+    }
+    
     const imageCount = await countImages(resolvedPath);
     
     if (imageCount === 0) {
-      console.log("📝 No supported images found (.jpg, .jpeg, .png)");
-      return;
+      console.log("\n❌ No images found in selected directory!");
+      console.log(`📝 No supported images (.jpg, .jpeg, .png) found in: ${resolvedPath}`);
+      console.log("\n💡 Please:");
+      console.log("   • Check the directory path");
+      console.log("   • Make sure images have supported extensions (.jpg, .jpeg, .png)");
+      console.log("   • Try running the command again with a different directory");
+      process.exit(1);
     }
 
     console.log(`\n📊 Found ${imageCount} image(s) to convert`);
@@ -290,11 +361,9 @@ async function main() {
 
     console.log("\n🔄 Converting images...");
     
-    // Keep track of converted images for code updates
     const convertedImages = [];
     const originalConvertImages = convertImages;
     
-    // Collect converted image paths
     const { converted, errors } = await (async function(dir, quality) {
       let convertedCount = 0;
       let errorCount = 0;
@@ -318,7 +387,7 @@ async function main() {
                   .toFile(outputPath);
                 
                 console.log(`✅ Converted: ${path.relative(process.cwd(), fullPath)} → ${path.basename(outputPath)}`);
-                convertedImages.push(fullPath); // Track converted images
+                convertedImages.push(fullPath); 
                 convertedCount++;
               } catch (err) {
                 console.error(`❌ Error converting ${fullPath}:`, err.message);
@@ -342,7 +411,6 @@ async function main() {
     }
 
     if (converted > 0) {
-      // Ask about updating code files
       const updateCodeConfirm = await inquirer.prompt([
         {
           type: "confirm",
@@ -356,7 +424,6 @@ async function main() {
         console.log("\n📝 Scanning code files for image references...");
         console.log("🔒 Safe mode: Only updating file extensions (.jpg/.png → .webp)");
         
-        // Preview changes first
         const preview = await previewCodeChanges(resolvedPath, convertedImages);
         
         if (preview.length > 0) {

@@ -27,6 +27,7 @@ That's it! The tool will guide you through an interactive setup.
 ## ✨ Features
 
 - 🎯 **Interactive CLI** - No complex commands, just follow the prompts
+- 🏠 **Smart directory detection** - Auto-detects common image folders (public/, assets/, etc.)
 - 📁 **Recursive conversion** - Processes all subdirectories automatically  
 - 🎨 **Quality options** - Choose from High (90), Standard (80), Good (70), or Smaller (60)
 - 🔍 **Smart detection** - Finds all `.jpg`, `.jpeg`, and `.png` files
@@ -37,8 +38,8 @@ That's it! The tool will guide you through an interactive setup.
 
 ## 🚀 How It Works
 
-1. **Run the command** - `npx images-to-webp`
-2. **Choose directory** - Enter the path to your images folder
+1. **Run the command** - `npx images-to-webp` (in your project directory)
+2. **Choose location** - Use current directory or specify a custom path
 3. **Select quality** - Pick your preferred WebP quality setting
 4. **Review & confirm** - See how many images will be converted
 5. **Wait for conversion** - Watch the progress as images are optimized
@@ -52,7 +53,11 @@ $ npx images-to-webp
 
 🖼️  Welcome to Images to WebP Converter!
 ═══════════════════════════════════════
-? 📁 Enter the directory path containing images: ./photos
+? 📁 Where are your images located? 
+  🏠 Current directory (3 images found)
+❯ 📁 ./public/ (12 images found)
+  📁 ./assets/ (5 images found)
+  📂 Specify a different path
 ? 🎨 Choose WebP quality: Standard Quality (80)
 
 📊 Found 15 image(s) to convert
