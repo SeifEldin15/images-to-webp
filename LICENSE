@@ -1,15 +1,48 @@
+MIT License with Attribution Requirement
 
 ---
 
+Copyright (c) 2025 SeifEldin15
+
 ### 📜 `LICENSE` (MIT)
 
-```text
-MIT License
+Permission is hereby granted, free of charge, to any person obtaining a copy
 
-Copyright (c) 2025 Your Name
+of this software and associated documentation files (the "Software"), to deal```text
+
+in the Software without restriction, including without limitation the rightsMIT License
+
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+
+copies of the Software, and to permit persons to whom the Software isCopyright (c) 2025 Your Name
+
+furnished to do so, subject to the following conditions:
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction...
 
-[truncated for brevity, I can include full text if you’d like]
+The above copyright notice and this permission notice shall be included in allof this software and associated documentation files (the "Software"), to deal
+
+copies or substantial portions of the Software.in the Software without restriction...
+
+
+
+ADDITIONAL ATTRIBUTION REQUIREMENT:[truncated for brevity, I can include full text if you’d like]
+
+Any distribution, modification, or derivative work of this Software, whether 
+in source code form or compiled binary form, MUST include prominent attribution 
+to the original author "SeifEldin15" and reference to the original project at 
+https://github.com/SeifEldin15/webp-image-converter
+
+This attribution must be visible to end users in any user interface, 
+documentation, or about section of applications that use this Software.
+
+Commercial use is explicitly permitted provided the attribution requirements 
+above are met.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
