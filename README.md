@@ -1,17 +1,22 @@
-# 🖼️ Images to WebP Converter
+# 🖼️ WebP Image Converter - PNG to WebP, JPG to WebP Batch Converter
 
 **Transform your images to WebP format with zero configuration!** ⚡
 
-Multi-platform CLI tool that lets you convert .jpg or .png, and images to .webp 
+Multi-platform CLI tool that lets you convert .jpg, .jpeg, .png images to .webp format for web optimization and faster loading times.
 
-An interactive CLI tool that automatically converts JPG, JPEG, and PNG images to WebP format. Includes smart directory detection, safe code updates, image exclusions, and optional cleanup of original files.
+An interactive **JavaScript image converter** that automatically converts **PNG to WebP**, **JPG to WebP**, and **JPEG to WebP** format. Features smart directory detection, safe code updates, image exclusions, batch conversion, and optional cleanup of original files. Perfect for **web optimization** and **image optimization** workflows.
 
 [![npm version](https://badge.fury.io/js/webp-image-converter.svg)](https://www.npmjs.com/package/webp-image-converter)
 [![Cross-Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://www.npmjs.com/package/webp-image-converter)
 
 ## 📈 Changelog
 
-### v1.0.3 (Latest)
+### v1.0.4 (Latest)
+- 🔍 Enhanced discoverability with comprehensive npm keywords
+- 📈 Improved package visibility for better search results
+- 🏷️ Added strategic SEO tags: `png-to-webp`, `optimize-images`, `image-converter`
+
+### v1.0.3
 - � **NEW:** Image exclusion functionality
 - 🎯 Pattern-based exclusions (wildcards, specific files)
 - 📋 Manual image selection for exclusions
@@ -65,16 +70,18 @@ npx github:SeifEldin15/webp-image-converter
 
 ---
 
-## ✨ Why Use This Tool?
+## ✨ Why Use This WebP Image Converter?
 
 - **🚀 Zero Configuration** - Just run `npx webp-image-converter` and follow prompts
 - **🏠 Smart Detection** - Automatically finds images in common folders (`public/`, `assets/`, `images/`, etc.)
 - **📱 Cross-Platform** - Works on Windows, macOS, and Linux
-- **🎨 Quality Control** - Choose from 4 quality presets (60-90%)
+- **🎨 Quality Control** - Choose from 4 quality presets for **optimize images** (60-90%)
 - **📝 Code Updates** - Safely updates HTML, CSS, JS files to use WebP (with preview!)
-- **⚡ Fast & Recursive** - Processes all subdirectories automatically
+- **⚡ Batch Conversion** - **PNG to WebP** and **JPG to WebP** processing of all subdirectories
+- **🚫 Image Exclusions** - Skip specific files with patterns or manual selection
 - **🔒 Safe Operations** - Preview changes before applying, confirmation prompts
-- **📊 Progress Tracking** - Real-time conversion progress and detailed results
+- **📊 Progress Tracking** - Real-time **image-to-webp** conversion progress and detailed results
+- **🌐 Web Optimization** - Reduce image file sizes by 25-80% for faster websites
 
 ## 🎯 How It Works
 
