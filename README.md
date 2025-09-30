@@ -1,50 +1,83 @@
 # 🖼️ Images to WebP Converter
 
-An interactive CLI tool that automatically converts your images to WebP format with optional cleanup of original files. Perfect for web optimization!
+**Transform your images to WebP format with ze📈 Conversion complete!
+✅ Successfully converted: 12 images
 
-## ⚡ Quick Usage
+? 📝 Update code files to use new WebP images? Yes
 
-**Option 1: Run without installation (recommended)**
+📝 Scanning code files for image references...
+🔒 Safe mode: Only updating file extensions (.jpg/.png → .webp)
+
+👁️  Preview of changes (3 files):
+📄 src/components/Hero.jsx:
+   Line 15: "hero.jpg" → "hero.webp"
+📄 styles/main.css:
+   Line 42: "logo.png" → "logo.webp"
+📄 index.html:
+   Line 28: "gallery/photo1.jpeg" → "gallery/photo1.webp"
+
+? Apply these changes to your code files? Yes
+✅ Updated 3 code file(s) with 3 image reference(s)
+💡 All paths and contexts preserved - only extensions changed
+
+? 🗑️  Delete original files after successful conversion? No
+
+🎉 All done! Your images have been optimized.
+```ration!** ⚡
+
+An interactive CLI tool that automatically converts JPG, JPEG, and PNG images to WebP format. Includes smart directory detection, safe code updates, and optional cleanup of original files.
+
+[![npm version](https://badge.fury.io/js/images-to-webp.svg)](https://www.npmjs.com/package/images-to-webp)
+[![Cross-Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://www.npmjs.com/package/images-to-webp)
+
+## ⚡ Quick Start
+
+### Just run this command in your project directory:
+
 ```bash
 npx images-to-webp
 ```
 
-**Option 2: Install globally**
+**That's it!** No installation needed. The tool will:
+- 🔍 Scan for images in your current directory and common folders
+- 🎨 Let you choose quality settings
+- 🔄 Convert all images to WebP format
+- 📝 Update your code files to use the new WebP images
+- 🗑️ Optionally clean up original files
+
+### Alternative Installation Methods:
+
 ```bash
+# Install globally (if you use it frequently)
 npm install -g images-to-webp
 webp-convert
-```
 
-**Option 3: Install from GitHub**
-```bash
+# Or install from GitHub
 npx github:SeifEldin15/images-to-webp
 ```
 
-That's it! The tool will guide you through an interactive setup.
-
 ---
 
-## ✨ Features
+## ✨ Why Use This Tool?
 
-- 🎯 **Interactive CLI** - No complex commands, just follow the prompts
-- 🏠 **Smart directory detection** - Auto-detects common image folders (public/, assets/, etc.)
-- 📁 **Recursive conversion** - Processes all subdirectories automatically  
-- 🎨 **Quality options** - Choose from High (90), Standard (80), Good (70), or Smaller (60)
-- 🔍 **Smart detection** - Finds all `.jpg`, `.jpeg`, and `.png` files
-- 📝 **Auto code updates** - Updates HTML, CSS, JS, and other files to use WebP images
-- ✅ **Safe cleanup** - Only deletes originals after successful WebP conversion
-- 📊 **Progress tracking** - Shows conversion progress and results
-- ⚠️ **Confirmation prompts** - Asks before destructive operations
+- **🚀 Zero Configuration** - Just run `npx images-to-webp` and follow prompts
+- **🏠 Smart Detection** - Automatically finds images in common folders (`public/`, `assets/`, `images/`, etc.)
+- **� Cross-Platform** - Works on Windows, macOS, and Linux
+- **🎨 Quality Control** - Choose from 4 quality presets (60-90%)
+- **📝 Code Updates** - Safely updates HTML, CSS, JS files to use WebP (with preview!)
+- **⚡ Fast & Recursive** - Processes all subdirectories automatically
+- **🔒 Safe Operations** - Preview changes before applying, confirmation prompts
+- **📊 Progress Tracking** - Real-time conversion progress and detailed results
 
-## 🚀 How It Works
+## 🎯 How It Works
 
-1. **Run the command** - `npx images-to-webp` (in your project directory)
-2. **Choose location** - Use current directory or specify a custom path
-3. **Select quality** - Pick your preferred WebP quality setting
-4. **Review & confirm** - See how many images will be converted
-5. **Wait for conversion** - Watch the progress as images are optimized
-6. **Update code files** - Automatically update HTML, CSS, JS files to use WebP
-7. **Optional cleanup** - Choose whether to delete original files
+1. **🏃‍♂️ Run** - `npx images-to-webp` in your project directory
+2. **📂 Choose** - Current directory, detected folders, or custom path
+3. **🎨 Quality** - High (90%), Standard (80%), Good (70%), or Small (60%)
+4. **✅ Confirm** - Review how many images will be converted
+5. **⚡ Convert** - Watch real-time progress as images are optimized
+6. **📝 Update** - Preview and apply code changes (HTML/CSS/JS files)
+7. **🗑️ Cleanup** - Optionally delete original files (only after successful conversion)
 
 ## 📸 Example Usage
 
@@ -79,35 +112,87 @@ $ npx images-to-webp
 🎉 All done! Your images have been optimized.
 ```
 
-## 🎯 Benefits
+## 💰 Benefits
 
-- **Smaller file sizes** - WebP typically reduces image size by 25-50%
-- **Better web performance** - Faster loading times for websites
-- **Modern format** - Supported by all major browsers
-- **Lossless & lossy** - Choose quality that fits your needs
+| Benefit | Description |
+|---------|-------------|
+| **🗜️ Smaller Files** | WebP reduces image size by 25-50% vs JPG/PNG |
+| **⚡ Faster Loading** | Better web performance and user experience |
+| **🌐 Modern Format** | Supported by all major browsers (95%+ coverage) |
+| **🎛️ Quality Control** | Choose between lossless and lossy compression |
+| **🔄 Batch Processing** | Convert hundreds of images in seconds |
+| **🛡️ Safe Updates** | Preview code changes before applying |
 
-## 🛠️ Advanced Usage
+## � System Requirements
 
-For developers who want to use the individual scripts:
+| Requirement | Details |
+|-------------|---------|
+| **Node.js** | Version 16 or higher |
+| **Platforms** | Windows, macOS, Linux |
+| **Input Formats** | `.jpg`, `.jpeg`, `.png` |
+| **Output Format** | `.webp` |
+| **Dependencies** | Automatically installed with npm |
 
-```bash
-# Convert images only
-node convert-to-webp.js ./path/to/images
+## 🔧 Configuration Options
 
-# Delete originals only (after conversion)
-node delete-originals.js ./path/to/images
-```
+### Quality Settings
+- **High Quality (90%)** - Best quality, larger files
+- **Standard Quality (80%)** - Balanced quality/size (recommended)
+- **Good Quality (70%)** - Good quality, smaller files  
+- **Smaller Size (60%)** - Smallest files, reduced quality
 
-## 📋 Requirements
+### Directory Options
+- **Current Directory** - Process images in the current folder
+- **Auto-detected Folders** - Common image directories (`public/`, `assets/`, etc.)
+- **Custom Path** - Specify any directory path
 
-- Node.js 16+ 
-- Supports: `.jpg`, `.jpeg`, `.png` files
-- Output: `.webp` format
+## 🚨 Common Use Cases
+
+- **🌐 Web Development** - Optimize images for websites and web apps
+- **📱 Mobile Apps** - Reduce app bundle size with smaller images
+- **⚡ Performance Optimization** - Improve page load speeds
+- **📦 Asset Pipeline** - Integrate into build processes
+- **🔄 Batch Conversion** - Convert large image libraries
+- **🎨 Content Creation** - Optimize images for blogs and portfolios
+
+## ❓ FAQ
+
+**Q: Will this break my existing code?**  
+A: No! The tool safely updates only file extensions and shows you a preview before making changes.
+
+**Q: What if I don't want to update my code files?**  
+A: Just say "No" when prompted. The tool will only convert images.
+
+**Q: Can I undo the changes?**  
+A: The tool creates WebP versions alongside originals. Only delete originals if you're sure.
+
+**Q: Does this work with Git repositories?**  
+A: Yes! The tool respects `.gitignore` and works great in version-controlled projects.
 
 ## 🤝 Contributing
 
-Feel free to open issues or submit pull requests on [GitHub](https://github.com/SeifEldin15/images-to-webp)!
+Found a bug or have a feature request? 
 
-## 📄 License
+- 🐛 [Report Issues](https://github.com/SeifEldin15/images-to-webp/issues)
+- 💡 [Request Features](https://github.com/SeifEldin15/images-to-webp/issues/new)
+- 🔧 [Submit Pull Requests](https://github.com/SeifEldin15/images-to-webp/pulls)
 
-MIT License - see LICENSE file for details.
+## � Changelog
+
+### v1.1.0 (Latest)
+- ✨ Enhanced smart directory detection
+- 🔍 Preview code changes before applying  
+- 🔒 Ultra-safe code updates (extensions only)
+- 📊 Improved progress tracking and error handling
+- 🎨 Better CLI interface and user experience
+
+### v1.0.x
+- 🚀 Initial release with basic conversion features
+
+## �📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+---
+
+**⭐ If this tool helped you, please consider starring the repo!**
