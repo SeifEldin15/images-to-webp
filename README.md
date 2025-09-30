@@ -11,7 +11,12 @@ An interactive **JavaScript image converter** that automatically converts **PNG 
 
 ## 📈 Changelog
 
-### v1.0.4 (Latest)
+### v1.0.5 (Latest)
+- 📄 **COMPLIANCE:** Added proper Sharp (Apache 2.0) license attribution
+- 🙏 Enhanced acknowledgments section crediting Lovell Fuller and Sharp
+- ⚖️ Updated LICENSE file with third-party license requirements
+
+### v1.0.4
 - 🔍 Enhanced discoverability with comprehensive npm keywords
 - 📈 Improved package visibility for better search results
 - 🏷️ Added strategic SEO tags: `png-to-webp`, `optimize-images`, `image-converter`
@@ -327,7 +332,15 @@ Found a bug or have a feature request?
 - 💡 [Request Features](https://github.com/SeifEldin15/webp-image-converter/issues/new)
 - 🔧 [Submit Pull Requests](https://github.com/SeifEldin15/webp-image-converter/pulls)
 
-## 📄 License
+## � Acknowledgments
+
+This tool is powered by [**Sharp**](https://github.com/lovell/sharp) - the blazing fast Node.js image processing library created by **Lovell Fuller**. Sharp handles all the heavy lifting for high-performance image conversion with its native C++ bindings.
+
+**Sharp License:** Apache 2.0  
+**Copyright:** 2013 Lovell Fuller and contributors  
+**Repository:** https://github.com/lovell/sharp  
+
+## �📄 License
 
 **MIT License with Attribution Requirement**
 
@@ -339,6 +352,9 @@ Found a bug or have a feature request?
 - Include "SeifEldin15" in your credits/about section
 - Link to: https://github.com/SeifEldin15/webp-image-converter
 - Attribution must be visible to end users
+
+**Third-Party Licenses:**
+- Uses [Sharp](https://github.com/lovell/sharp) (Apache 2.0) - High performance Node.js image processing by Lovell Fuller
 
 See [LICENSE](LICENSE) file for full details.
 

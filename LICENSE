@@ -1,28 +1,16 @@
 MIT License with Attribution Requirement
 
----
-
 Copyright (c) 2025 SeifEldin15
 
-### 📜 `LICENSE` (MIT)
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
-
-of this software and associated documentation files (the "Software"), to deal```text
-
-in the Software without restriction, including without limitation the rightsMIT License
-
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-
-copies of the Software, and to permit persons to whom the Software isCopyright (c) 2025 Your Name
-
+copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-
-The above copyright notice and this permission notice shall be included in allof this software and associated documentation files (the "Software"), to deal
-
-copies or substantial portions of the Software.in the Software without restriction...
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 
 
@@ -38,6 +26,16 @@ documentation, or about section of applications that use this Software.
 
 Commercial use is explicitly permitted provided the attribution requirements 
 above are met.
+
+THIRD-PARTY LICENSES:
+
+This software uses Sharp (https://github.com/lovell/sharp) which is licensed 
+under the Apache License 2.0. The Sharp license requires the following attribution:
+
+Sharp - High performance Node.js image processing
+Copyright 2013 Lovell Fuller and contributors
+Licensed under the Apache License, Version 2.0 
+https://github.com/lovell/sharp
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
