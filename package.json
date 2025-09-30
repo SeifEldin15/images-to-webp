@@ -1,11 +1,11 @@
 {
   "name": "webp-image-converter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "main": "cli.js",
   "bin": {
-    "webp-convert": "./cli.js",
-    "images-to-webp": "./cli.js"
+    "webp-image-converter": "./cli.js",
+    "webp-converter": "./cli.js"
   },
   "scripts": {
     "start": "node cli.js",

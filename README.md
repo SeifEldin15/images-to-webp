@@ -27,7 +27,7 @@ npx webp-image-converter
 ```bash
 # Install globally (if you use it frequently)
 npm install -g webp-image-converter
-webp-convert
+webp-converter
 
 # Or install from GitHub
 npx github:SeifEldin15/webp-image-converter
@@ -132,7 +132,7 @@ npx webp-image-converter
 ```bash
 # Install globally (if you use it frequently)
 npm install -g webp-image-converter
-webp-convert
+webp-converter
 
 # Or install from GitHub
 npx github:SeifEldin15/webp-image-converter
