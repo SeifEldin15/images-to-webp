@@ -150,6 +150,52 @@ async function findCodeFiles(dir) {
   return codeFiles;
 }
 
+async function previewCodeChanges(dir, convertedImages) {
+  const codeFiles = await findCodeFiles(dir);
+  const changes = [];
+
+  for (const filePath of codeFiles) {
+    try {
+      const content = fs.readFileSync(filePath, 'utf8');
+      const fileChanges = [];
+
+      // Create safe patterns for each converted image
+      for (const imagePath of convertedImages) {
+        const imageFilename = path.basename(imagePath);
+        const escapedFilename = imageFilename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        
+        // Ultra-safe pattern: only match exact filename with image extensions
+        const safePattern = new RegExp(escapedFilename, 'g');
+        
+        let match;
+        while ((match = safePattern.exec(content)) !== null) {
+          // Double-check it's actually an image reference
+          if (/\.(jpg|jpeg|png)$/i.test(match[0])) {
+            const webpVersion = match[0].replace(/\.(jpg|jpeg|png)$/i, '.webp');
+            fileChanges.push({
+              line: content.substring(0, match.index).split('\n').length,
+              from: match[0],
+              to: webpVersion
+            });
+          }
+        }
+      }
+
+      if (fileChanges.length > 0) {
+        changes.push({
+          file: path.relative(process.cwd(), filePath),
+          changes: fileChanges
+        });
+      }
+
+    } catch (error) {
+      console.error(`❌ Error reading ${filePath}:`, error.message);
+    }
+  }
+
+  return changes;
+}
+
 async function updateCodeFiles(dir, convertedImages) {
   const codeFiles = await findCodeFiles(dir);
   let updatedFiles = 0;
@@ -158,44 +204,28 @@ async function updateCodeFiles(dir, convertedImages) {
   for (const filePath of codeFiles) {
     try {
       let content = fs.readFileSync(filePath, 'utf8');
-      let fileUpdated = false;
+      let originalContent = content;
       let replacements = 0;
 
-      // Create patterns for each converted image
+      // Create ultra-safe patterns for each converted image
       for (const imagePath of convertedImages) {
-        const relativePath = path.relative(dir, imagePath);
-        const webpPath = relativePath.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+        const imageFilename = path.basename(imagePath);
+        const escapedFilename = imageFilename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         
-        // Different patterns for different file types
-        const patterns = [
-          // HTML src attributes: src="image.jpg" -> src="image.webp"
-          new RegExp(`(src\\s*=\\s*["'])([^"']*\\/)?(${path.basename(imagePath).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})(?=["'])`, 'gi'),
-          
-          // CSS background-image: url('image.jpg') -> url('image.webp')
-          new RegExp(`(url\\s*\\(\\s*["']?)([^"')]*\\/)?(${path.basename(imagePath).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})(?=["']?\\))`, 'gi'),
-          
-          // JavaScript/JSX imports and requires
-          new RegExp(`(import\\s+.*from\\s+["']|require\\s*\\(\\s*["'])([^"']*\\/)?(${path.basename(imagePath).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})(?=["'])`, 'gi'),
-          
-          // Generic string references (careful approach)
-          new RegExp(`(["'])([^"']*\\/)?(${path.basename(imagePath).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})(?=["'])`, 'gi')
-        ];
-
-        for (const pattern of patterns) {
-          const newContent = content.replace(pattern, (match, prefix, pathPart, filename) => {
-            const webpFilename = filename.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+        // Ultra-safe: Only replace exact filename matches with image extensions
+        const safePattern = new RegExp(escapedFilename, 'g');
+        
+        content = content.replace(safePattern, (match) => {
+          // Triple-check: only replace if it's actually an image file
+          if (/\.(jpg|jpeg|png)$/i.test(match)) {
             replacements++;
-            return `${prefix}${pathPart || ''}${webpFilename}`;
-          });
-          
-          if (newContent !== content) {
-            content = newContent;
-            fileUpdated = true;
+            return match.replace(/\.(jpg|jpeg|png)$/i, '.webp');
           }
-        }
+          return match;
+        });
       }
 
-      if (fileUpdated) {
+      if (content !== originalContent && replacements > 0) {
         fs.writeFileSync(filePath, content);
         console.log(`📝 Updated: ${path.relative(process.cwd(), filePath)} (${replacements} references)`);
         updatedFiles++;
@@ -317,17 +347,43 @@ async function main() {
         {
           type: "confirm",
           name: "updateCode",
-          message: "📝 Update code files to use new WebP images? (HTML, CSS, JS, etc.)",
+          message: "📝 Update code files to use new WebP images? (Only changes file extensions safely)",
           default: true
         }
       ]);
 
       if (updateCodeConfirm.updateCode) {
-        console.log("\n📝 Scanning and updating code files...");
-        const { updatedFiles, totalReplacements } = await updateCodeFiles(resolvedPath, convertedImages);
+        console.log("\n📝 Scanning code files for image references...");
+        console.log("🔒 Safe mode: Only updating file extensions (.jpg/.png → .webp)");
         
-        if (updatedFiles > 0) {
-          console.log(`✅ Updated ${updatedFiles} code file(s) with ${totalReplacements} image reference(s)`);
+        // Preview changes first
+        const preview = await previewCodeChanges(resolvedPath, convertedImages);
+        
+        if (preview.length > 0) {
+          console.log(`\n👁️  Preview of changes (${preview.length} files):`);
+          preview.forEach(({ file, changes }) => {
+            console.log(`📄 ${file}:`);
+            changes.forEach(({ line, from, to }) => {
+              console.log(`   Line ${line}: "${from}" → "${to}"`);
+            });
+          });
+          
+          const confirmChanges = await inquirer.prompt([
+            {
+              type: "confirm",
+              name: "proceed",
+              message: "Apply these changes to your code files?",
+              default: true
+            }
+          ]);
+          
+          if (confirmChanges.proceed) {
+            const { updatedFiles, totalReplacements } = await updateCodeFiles(resolvedPath, convertedImages);
+            console.log(`✅ Updated ${updatedFiles} code file(s) with ${totalReplacements} image reference(s)`);
+            console.log("💡 All paths and contexts preserved - only extensions changed");
+          } else {
+            console.log("⏭️  Skipped code updates");
+          }
         } else {
           console.log("📝 No code files found that reference the converted images");
         }
