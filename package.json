@@ -1,6 +1,6 @@
 {
   "name": "webp-image-converter",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "main": "cli.js",
   "bin": {
@@ -23,7 +23,27 @@
   },
   "homepage": "https://github.com/SeifEldin15/webp-image-converter#readme",
   "description": "A CLI tool to automatically convert images to WebP format with exclusion patterns and optional cleanup of original files. Commercial use allowed with attribution.",
-  "keywords": ["webp", "image", "conversion", "optimization", "cli", "sharp"],
+  "keywords": [
+    "webp",
+    "image",
+    "conversion", 
+    "optimization",
+    "cli",
+    "sharp",
+    "javascript",
+    "png-to-webp",
+    "optimize-images",
+    "image-converter",
+    "image-to-webp",
+    "converter",
+    "jpg-to-webp",
+    "png",
+    "jpg",
+    "jpeg",
+    "batch-conversion",
+    "web-optimization",
+    "performance"
+  ],
   "dependencies": {
     "inquirer": "^9.2.15",
     "sharp": "^0.34.1"
